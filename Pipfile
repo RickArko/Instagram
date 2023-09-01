@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+beautifulsoup4 = "==4.12.2"
+loguru = "==0.7.0"
+instaloader = "==4.10"
+python-dotenv = "==1.0.0"
+requests = "==2.31.0"
+
+[dev-packages]
+black= "*"
+pytest = "*"
+ruff = "*"
+
+[requires]
+python_version = "3.9"
