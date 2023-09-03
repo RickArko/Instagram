@@ -1,7 +1,8 @@
 from loguru import logger
 from datetime import datetime
 from src.utils import save_dict
-from src.instaloader import get_profile, get_followers
+from src.instaprofile import get_profile, get_followers
+
 
 if __name__ == "__main__":
     logger.info("Starting Instagram Tracker...")
