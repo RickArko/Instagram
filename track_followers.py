@@ -10,4 +10,4 @@ if __name__ == "__main__":
     follower_dict = get_followers(PROFILE)
     fname_followers = f"""cache/{datetime.today().strftime("%Y-%m-%d")}-followers.json"""
     save_dict(follower_dict, fname_followers)
-    logger.info(f"Saved followers to {fname_followers}")
+    logger.info(f"""Saved {follower_dict["nfollowers"]} followers to {fname_followers}""")

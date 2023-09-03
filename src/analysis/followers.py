@@ -4,7 +4,7 @@ from typing import List, Set, Union
 
 import pandas as pd
 from tqdm import tqdm
-
+from instaloader import Profile
 from src import get_followers, get_profile
 from src.utils import read_json
 
@@ -66,8 +66,39 @@ def get_saved_followers(date_to_check: Union[str, datetime, pd.Timestamp]) -> Se
 
     json_data = read_json(f"cache/{date_to_check}-followers.json")
     return set(json_data["followers"])
-    
-    
+
+
+def get_follower_updates_by_date(profile: Profile,
+                                 followers_cache: List[Path]) -> pd.DataFrame:
+    """Generate a DataFrame of follower updates by date using cache created by track_followers.py.
+
+    Args:
+        DIR (Path): _description_
+
+    Returns:
+        pd.DataFrame: _description_
+    """
+    current = get_followers(profile=profile)
+    current_followers = set(current["followers"])
+    dates = [_get_date(f) for f in followers_cache]
+    results = []
+
+    for d in tqdm(dates):
+        historic_followers = get_saved_followers(d)
+        
+        new_followers = get_new_followers(historic_followers, current_followers)
+        new_unfollowers = get_new_unfollowers(historic_followers, current_followers)
+        
+        day_result = {}
+        day_result["date"] = d
+        day_result["new_followers"] = new_followers
+        day_result["new_unfollowers"] = new_unfollowers
+        results.append(day_result)
+        
+    df = pd.DataFrame(results)
+    return df
+
+
 if __name__ == "__main__":
     saved_followers = list(Path("cache").glob("*-followers.json"))
     profile = get_profile("rickarko")
